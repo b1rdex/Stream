@@ -8,7 +8,7 @@
  *
  * New BSD License
  *
- * Copyright © 2007-2017, Hoa community. All rights reserved.
+ * Copyright © 2007-2013, Ivan Enderlin. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -34,29 +34,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Hoa\Stream;
+namespace Hoa\Stream {
 
 /**
  * Class \Hoa\Stream\Composite.
  *
- * Declare a composite stream, i.e. a stream that uses a stream.
+ * Declare a composite stream, i.e. a stream that use stream.
  *
- * @copyright  Copyright © 2007-2017 Hoa community
+ * @author     Ivan Enderlin <ivan.enderlin@hoa-project.net>
+ * @copyright  Copyright © 2007-2013 Ivan Enderlin.
  * @license    New BSD License
  */
-abstract class Composite
-{
+
+abstract class Composite {
+
     /**
      * Current stream.
      *
-     * @var mixed
+     * @var mixed object
      */
     protected $_stream      = null;
 
     /**
      * Inner stream.
      *
-     * @var \Hoa\Stream
+     * @var \Hoa\Stream object
      */
     protected $_innerStream = null;
 
@@ -65,11 +67,12 @@ abstract class Composite
     /**
      * Set current stream.
      *
+     * @access  protected
      * @param   object  $stream    Current stream.
      * @return  object
      */
-    protected function setStream($stream)
-    {
+    protected function setStream ( $stream ) {
+
         $old           = $this->_stream;
         $this->_stream = $stream;
 
@@ -79,21 +82,23 @@ abstract class Composite
     /**
      * Get current stream.
      *
+     * @access  protected
      * @return  object
      */
-    public function getStream()
-    {
+    protected function getStream ( ) {
+
         return $this->_stream;
     }
 
     /**
      * Set inner stream.
      *
+     * @access  protected
      * @param   \Hoa\Stream  $innerStream    Inner stream.
      * @return  \Hoa\Stream
      */
-    protected function setInnerStream(Stream $innerStream)
-    {
+    protected function setInnerStream ( Stream $innerStream ) {
+
         $old                = $this->_innerStream;
         $this->_innerStream = $innerStream;
 
@@ -103,10 +108,13 @@ abstract class Composite
     /**
      * Get inner stream.
      *
+     * @access  public
      * @return  \Hoa\Stream
      */
-    public function getInnerStream()
-    {
+    public function getInnerStream ( ) {
+
         return $this->_innerStream;
     }
+}
+
 }

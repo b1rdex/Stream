@@ -8,7 +8,7 @@
  *
  * New BSD License
  *
- * Copyright © 2007-2017, Hoa community. All rights reserved.
+ * Copyright © 2007-2013, Ivan Enderlin. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -34,18 +34,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Hoa\Stream\IStream;
+namespace Hoa\Stream\IStream {
 
 /**
  * Interface \Hoa\Stream\IStream\Lockable.
  *
  * Interface for lockable input/output.
  *
- * @copyright  Copyright © 2007-2017 Hoa community
+ * @author     Ivan Enderlin <ivan.enderlin@hoa-project.net>
+ * @copyright  Copyright © 2007-2013 Ivan Enderlin.
  * @license    New BSD License
  */
-interface Lockable extends Stream
-{
+
+interface Lockable {
+
     /**
      * Acquire a shared lock (reader).
      *
@@ -80,8 +82,11 @@ interface Lockable extends Stream
      * Portable advisory locking.
      * Should take a look at stream_supports_lock().
      *
+     * @access  public
      * @param   int     $operation    Operation, use the self::LOCK_* constants.
      * @return  bool
      */
-    public function lock($operation);
+    public function lock ( $operation );
+}
+
 }

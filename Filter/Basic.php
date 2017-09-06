@@ -8,7 +8,7 @@
  *
  * New BSD License
  *
- * Copyright © 2007-2017, Hoa community. All rights reserved.
+ * Copyright © 2007-2013, Ivan Enderlin. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -34,9 +34,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Hoa\Stream\Filter;
+namespace {
 
-use Hoa\Stream;
+from('Hoa')
+
+/**
+ * \Hoa\Stream\Filter\Exception
+ */
+-> import('Stream.Filter.Exception')
+
+/**
+ * \Hoa\Stream\Bucket
+ */
+-> import('Stream.Bucket');
+
+}
+
+namespace Hoa\Stream\Filter {
 
 /**
  * Class \Hoa\Stream\Filter\Basic.
@@ -44,11 +58,13 @@ use Hoa\Stream;
  * Basic filter. Force to implement some methods.
  * Actually, it extends the php_user_filter class.
  *
- * @copyright  Copyright © 2007-2017 Hoa community
+ * @author     Ivan Enderlin <ivan.enderlin@hoa-project.net>
+ * @copyright  Copyright © 2007-2013 Ivan Enderlin.
  * @license    New BSD License
  */
-abstract class Basic extends \php_user_filter implements Stream\IStream\Stream
-{
+
+abstract class Basic extends \php_user_filter {
+
     /**
      * Filter processed successfully with data available in the out bucket
      * brigade.
@@ -100,6 +116,7 @@ abstract class Basic extends \php_user_filter implements Stream\IStream\Stream
      * This method is called whenever data is read from or written to the attach
      * stream.
      *
+     * @access  public
      * @param   resource  $in           A resource pointing to a bucket brigade
      *                                  which contains one or more bucket
      *                                  objects containing data to be filtered.
@@ -116,12 +133,13 @@ abstract class Basic extends \php_user_filter implements Stream\IStream\Stream
      *                                  closing parameter will be set to true.
      * @return  int
      */
-    public function filter($in, $out, &$consumed, $closing)
-    {
-        $iBucket = new Stream\Bucket($in);
-        $oBucket = new Stream\Bucket($out);
+    public function filter ( $in, $out, &$consumed, $closing ) {
 
-        while (false === $iBucket->eob()) {
+        $iBucket = new \Hoa\Stream\Bucket($in);
+        $oBucket = new \Hoa\Stream\Bucket($out);
+
+        while(true !== $iBucket->eob()) {
+
             $consumed += $iBucket->getLength();
             $oBucket->append($iBucket);
         }
@@ -135,10 +153,11 @@ abstract class Basic extends \php_user_filter implements Stream\IStream\Stream
     /**
      * Called during instanciation of the filter class object.
      *
+     * @access  public
      * @return  bool
      */
-    public function onCreate()
-    {
+    public function onCreate ( ) {
+
         return true;
     }
 
@@ -146,21 +165,23 @@ abstract class Basic extends \php_user_filter implements Stream\IStream\Stream
      * Called upon filter shutdown (typically, this is also during stream
      * shutdown), and is executed after the flush method is called.
      *
+     * @access  public
      * @return  void
      */
-    public function onClose()
-    {
+    public function onClose ( ) {
+
         return;
     }
 
     /**
      * Set the filter name.
      *
+     * @access  public
      * @param   string  $name    Filter name.
      * @return  string
      */
-    public function setName($name)
-    {
+    public function setName ( $name ) {
+
         $old              = $this->filtername;
         $this->filtername = $name;
 
@@ -170,11 +191,12 @@ abstract class Basic extends \php_user_filter implements Stream\IStream\Stream
     /**
      * Set the filter parameters.
      *
+     * @access  public
      * @param   mixed   $parameters    Filter parameters.
      * @return  mixed
      */
-    public function setParameters($parameters)
-    {
+    public function setParameters ( $parameters ) {
+
         $old          = $this->params;
         $this->params = $parameters;
 
@@ -184,32 +206,37 @@ abstract class Basic extends \php_user_filter implements Stream\IStream\Stream
     /**
      * Get the filter name.
      *
+     * @access  public
      * @return  string
      */
-    public function getName()
-    {
+    public function getName ( ) {
+
         return $this->filtername;
     }
 
     /**
      * Get the filter parameters.
      *
+     * @access  public
      * @return  mixed
      */
-    public function getParameters()
-    {
+    public function getParameters ( ) {
+
         return $this->params;
     }
 
     /**
      * Get the stream resource being filtered.
-     * Maybe available only during **filter** calls when the closing parameter
-     * is set to false.
+     * Maybe available only during filter calls when the closing parameter is
+     * set to false.
      *
+     * @access  public
      * @return  resource
      */
-    public function getStream()
-    {
-        return isset($this->stream) ? $this->stream : null;
+    public function getStream ( ) {
+
+        return $this->stream;
     }
+}
+
 }

@@ -8,7 +8,7 @@
  *
  * New BSD License
  *
- * Copyright © 2007-2017, Hoa community. All rights reserved.
+ * Copyright © 2007-2013, Ivan Enderlin. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -34,29 +34,44 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Hoa\Stream\Wrapper\IWrapper;
+namespace {
 
-use Hoa\Consistency;
+from('Hoa')
+
+/**
+ * \Hoa\Stream\Wrapper\IWrapper\File
+ */
+-> import('Stream.Wrapper.I~.File')
+
+/**
+ * \Hoa\Stream\Wrapper\IWrapper\Stream
+ */
+-> import('Stream.Wrapper.I~.Stream');
+
+}
+
+namespace Hoa\Stream\Wrapper\IWrapper {
 
 /**
  * Interface \Hoa\Stream\Wrapper\IWrapper.
  *
  * Interface for stream wrapper class.
  *
- * @copyright  Copyright © 2007-2017 Hoa community
+ * @author     Ivan Enderlin <ivan.enderlin@hoa-project.net>
+ * @copyright  Copyright © 2007-2013 Ivan Enderlin.
  * @license    New BSD License
  */
-interface IWrapper extends File, Stream
-{
+
+interface IWrapper extends File, Stream {
+
     /**
      * Constructs a new stream wrapper.
      * Called when opening the stream wrapper, right before self::stream_open().
      *
+     * @access  public
+     * @return  void
      */
-    public function __construct();
+    public function __construct ( );
 }
 
-/**
- * Flex entity.
- */
-Consistency::flexEntity('Hoa\Stream\Wrapper\IWrapper\IWrapper');
+}

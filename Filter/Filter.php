@@ -8,7 +8,7 @@
  *
  * New BSD License
  *
- * Copyright © 2007-2017, Hoa community. All rights reserved.
+ * Copyright © 2007-2013, Ivan Enderlin. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -34,21 +34,36 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Hoa\Stream\Filter;
+namespace {
 
-use Hoa\Consistency;
-use Hoa\Stream;
+from('Hoa')
+
+/**
+ * \Hoa\Stream\Filter\Exception
+ */
+-> import('Stream.Filter.Exception')
+
+/**
+ * \Hoa\Stream
+ */
+-> import('Stream.~');
+
+}
+
+namespace Hoa\Stream\Filter {
 
 /**
  * Class \Hoa\Stream\Filter.
  *
  * Proposes some methods to handle filter.
  *
- * @copyright  Copyright © 2007-2017 Hoa community
+ * @author     Ivan Enderlin <ivan.enderlin@hoa-project.net>
+ * @copyright  Copyright © 2007-2013 Ivan Enderlin.
  * @license    New BSD License
  */
-abstract class Filter extends Stream
-{
+
+abstract class Filter extends \Hoa\Stream {
+
     /**
      * Overwrite filter if already exists.
      *
@@ -85,54 +100,40 @@ abstract class Filter extends Stream
     const READ_AND_WRITE   = STREAM_FILTER_ALL;
 
     /**
-     * All resources with at least one filter registered.
+     * Filters resources register.
      *
-     * @var array
+     * @var \Hoa\Stream\Filter array
      */
-    protected static $_resources = [];
+    protected static $_resources = array();
 
 
 
     /**
      * Register a stream filter.
      *
+     * @access  public
      * @param   string  $name         Filter name.
      * @param   mixed   $class        Class name or instance.
-     * @param   bool    $overwrite    Overwrite filter if already exists or
+     * @param   bool    $overwrite    Overwrite filter if alreaady exists or
      *                                not. Given by self::*OVERWRITE constants.
      * @return  bool
-     * @throws  \Hoa\Stream\Filter\Exception
+     * @throw   \Hoa\Stream\Filter\Exception
      */
-    public static function register(
-        $name,
-        $class,
-        $overwrite = self::DO_NOT_OVERWRITE
-    ) {
-        if ($overwrite === self::DO_NOT_OVERWRITE &&
-            true       === self::isRegistered($name)) {
-            throw new Exception('Filter %s is already registered.', 0, $name);
-        }
+    public static function register ( $name,
+                                      $class,
+                                      $overwrite = self::DO_NOT_OVERWRITE ) {
 
-        if (is_object($class)) {
+        if(   $overwrite === self::DO_NOT_OVERWRITE
+           && true       === self::isRegistered($name))
+            throw new Exception(
+                'Filter %s is already registered.', 0, $name);
+
+        if(empty($name))
+            throw new Exception(
+                'Filter name cannot be empty.', 1);
+
+        if(is_object($class))
             $class = get_class($class);
-        }
-
-        if (empty($name)) {
-            throw new Exception(
-                'Filter name cannot be empty (implementation class is %s).',
-                1,
-                $class
-            );
-        }
-
-        if (false === class_exists($class, false)) {
-            throw new Exception(
-                'Cannot register the %s class for the filter %s ' .
-                'because it does not exist.',
-                2,
-                [$class, $name]
-            );
-        }
 
         return stream_filter_register($name, $class);
     }
@@ -140,32 +141,28 @@ abstract class Filter extends Stream
     /**
      * Append a filter to the list of filters.
      *
+     * @access  public
      * @param   mixed       $stream        Stream which received the filter.
      *                                     Should be resource or an object
-     *                                     of kind `Hoa\Stream`.
+     *                                     \Hoa\Stream.
      * @param   string      $name          Filter name.
-     * @param   int         $mode          `self::READ`, `self::WRITE` or
-     *                                     `self::READ_AND_WRITE`.
+     * @param   int         $mode          self::READ, self::WRITE or
+     *                                     self::READ_AND_WRITE.
      * @param   mixed       $parameters    Parameters.
      * @return  resource
      */
-    public static function append(
-        $stream,
-        $name,
-        $mode       = self::READ,
-        $parameters = null
-    ) {
-        if ($stream instanceof Stream) {
-            $stream = $stream->getStream();
-        }
+    public static function append ( $stream, $name,
+                                    $mode = self::READ, $parameters = null ) {
 
-        if (null === $parameters) {
+        if($stream instanceof \Hoa\Stream)
+            $stream = $stream->getStream();
+
+        if(null === $parameters)
             return self::$_resources[$name] = stream_filter_append(
                 $stream,
                 $name,
                 $mode
             );
-        }
 
         return self::$_resources[$name] = stream_filter_append(
             $stream,
@@ -178,6 +175,7 @@ abstract class Filter extends Stream
     /**
      * Prepend a filter to the list of filters.
      *
+     * @access  public
      * @param   mixed       $stream        Stream which received the filter.
      *                                     Should be resource or an object
      *                                     \Hoa\Stream.
@@ -187,22 +185,18 @@ abstract class Filter extends Stream
      * @param   mixed       $parameters    Parameters.
      * @return  resource
      */
-    public static function prepend(
-        $stream,
-        $name,
-        $mode = self::READ, $parameters = null
-    ) {
-        if ($stream instanceof Stream) {
-            $stream = $stream->getStream();
-        }
+    public static function prepend ( $stream, $name,
+                                     $mode = self::READ, $parameters = null ) {
 
-        if (null === $parameters) {
+        if($stream instanceof \Hoa\Stream)
+            $stream = $stream->getStream();
+
+        if(null === $parameters)
             return self::$_resources[$name] = stream_filter_prepend(
                 $stream,
                 $name,
                 $mode
             );
-        }
 
         return self::$_resources[$name] = stream_filter_prepend(
             $stream,
@@ -215,24 +209,20 @@ abstract class Filter extends Stream
     /**
      * Delete a filter.
      *
+     * @access  public
      * @param   mixed   $streamFilter    Stream filter resource or name.
      * @return  bool
-     * @throws  \Hoa\Stream\Filter\Exception
+     * @throw   \Hoa\Stream\Filter\Exception
      */
-    public static function remove($streamFilter)
-    {
-        if (!is_resource($streamFilter)) {
-            if (isset(self::$_resources[$streamFilter])) {
+    public static function remove ( $streamFilter ) {
+
+        if(!is_resource($streamFilter))
+            if(isset(self::$_resources[$streamFilter]))
                 $streamFilter = self::$_resources[$streamFilter];
-            } else {
+            else
                 throw new Exception(
-                    'Cannot remove the stream filter %s because no resource was ' .
-                    'found with this name.',
-                    3,
-                    $streamFilter
-                );
-            }
-        }
+                    'Cannot remove the stream filter %s because no resource was ' . 
+                    'found with this name.', 2, $streamFilter);
 
         return stream_filter_remove($streamFilter);
     }
@@ -240,26 +230,25 @@ abstract class Filter extends Stream
     /**
      * Check if a filter is already registered or not.
      *
+     * @access  public
      * @param   string  $name    Filter name.
      * @return  bool
      */
-    public static function isRegistered($name)
-    {
+    public static function isRegistered ( $name ) {
+
         return in_array($name, self::getRegistered());
     }
 
     /**
      * Get all registered filer names.
      *
+     * @access  public
      * @return  array
      */
-    public static function getRegistered()
-    {
+    public static function getRegistered ( ) {
+
         return stream_get_filters();
     }
 }
 
-/**
- * Flex entity.
- */
-Consistency::flexEntity('Hoa\Stream\Filter\Filter');
+}

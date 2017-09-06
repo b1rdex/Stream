@@ -8,7 +8,7 @@
  *
  * New BSD License
  *
- * Copyright © 2007-2017, Hoa community. All rights reserved.
+ * Copyright © 2007-2013, Ivan Enderlin. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -34,7 +34,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Hoa\Stream\IStream;
+namespace Hoa\Stream\IStream {
 
 /**
  * Interface \Hoa\Stream\IStream\Bufferable.
@@ -43,46 +43,55 @@ namespace Hoa\Stream\IStream;
  * of Hoa\Stream (please, see *StreamBuffer*() methods). Classes implementing
  * this interface are able to create nested buffers, flush them etc.
  *
- * @copyright  Copyright © 2007-2017 Hoa community
+ * @author     Ivan Enderlin <ivan.enderlin@hoa-project.net>
+ * @copyright  Copyright © 2007-2013 Ivan Enderlin.
  * @license    New BSD License
  */
-interface Bufferable extends Stream
-{
+
+interface Bufferable {
+
     /**
      * Start a new buffer.
      * The callable acts like a light filter.
      *
+     * @access  public
      * @param   mixed   $callable    Callable.
      * @param   int     $size        Size.
      * @return  int
      */
-    public function newBuffer($callable = null, $size = null);
+    public function newBuffer ( $callable = null, $size = null );
 
     /**
      * Flush the buffer.
      *
+     * @access  public
      * @return  void
      */
-    public function flush();
+    public function flush ( );
 
     /**
      * Delete buffer.
      *
+     * @access  public
      * @return  bool
      */
-    public function deleteBuffer();
+    public function deleteBuffer ( );
 
     /**
      * Get bufffer level.
      *
+     * @access  public
      * @return  int
      */
-    public function getBufferLevel();
+    public function getBufferLevel ( );
 
     /**
      * Get buffer size.
      *
+     * @access  public
      * @return  int
      */
-    public function getBufferSize();
+    public function getBufferSize ( );
+}
+
 }

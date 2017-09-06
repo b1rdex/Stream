@@ -8,7 +8,7 @@
  *
  * New BSD License
  *
- * Copyright © 2007-2017, Hoa community. All rights reserved.
+ * Copyright © 2007-2013, Ivan Enderlin. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -34,18 +34,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Hoa\Stream\Filter;
+namespace {
 
-use Hoa\Stream;
+from('Hoa')
+
+/**
+ * \Hoa\Stream\Exception
+ */
+-> import('Stream.Exception');
+
+}
+
+namespace Hoa\Stream\Filter {
 
 /**
  * Class \Hoa\Stream\Filter\Exception.
  *
  * Extending the \Hoa\Stream\Exception class.
  *
- * @copyright  Copyright © 2007-2017 Hoa community
+ * @author     Ivan Enderlin <ivan.enderlin@hoa-project.net>
+ * @copyright  Copyright © 2007-2013 Ivan Enderlin.
  * @license    New BSD License
  */
-class Exception extends Stream\Exception
-{
+
+class Exception extends \Hoa\Stream\Exception { }
+
 }

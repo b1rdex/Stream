@@ -8,7 +8,7 @@
  *
  * New BSD License
  *
- * Copyright © 2007-2017, Hoa community. All rights reserved.
+ * Copyright © 2007-2013, Ivan Enderlin. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -34,18 +34,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Hoa\Stream\IStream;
+namespace Hoa\Stream\IStream {
 
 /**
  * Interface \Hoa\Stream\IStream\Statable.
  *
  * Interface for statable input/output.
  *
- * @copyright  Copyright © 2007-2017 Hoa community
+ * @author     Ivan Enderlin <ivan.enderlin@hoa-project.net>
+ * @copyright  Copyright © 2007-2013 Ivan Enderlin.
  * @license    New BSD License
  */
-interface Statable extends Stream
-{
+
+interface Statable {
+
     /**
      * Size is undefined.
      *
@@ -56,91 +58,106 @@ interface Statable extends Stream
     /**
      * Get size.
      *
+     * @access  public
      * @return  int
      */
-    public function getSize();
+    public function getSize ( );
 
     /**
      * Get informations about a file.
      *
+     * @access  public
      * @return  array
      */
-    public function getStatistic();
+    public function getStatistic ( );
 
     /**
      * Get last access time of file.
      *
+     * @access  public
      * @return  int
      */
-    public function getATime();
+    public function getATime ( );
 
     /**
      * Get inode change time of file.
      *
+     * @access  public
      * @return  int
      */
-    public function getCTime();
+    public function getCTime ( );
 
     /**
      * Get file modification time.
      *
+     * @access  public
      * @return  int
      */
-    public function getMTime();
+    public function getMTime ( );
 
     /**
      * Get file group.
      *
+     * @access  public
      * @return  int
      */
-    public function getGroup();
+    public function getGroup ( );
 
     /**
      * Get file owner.
      *
+     * @access  public
      * @return  int
      */
-    public function getOwner();
+    public function getOwner ( );
 
     /**
      * Get file permissions.
      *
+     * @access  public
      * @return  int
      */
-    public function getPermissions();
+    public function getPermissions ( );
 
     /**
      * Check if the file is readable.
      *
+     * @access  public
      * @return  bool
      */
-    public function isReadable();
+    public function isReadable ( );
 
     /**
      * Check if the file is writable.
      *
+     * @access  public
      * @return  bool
      */
-    public function isWritable();
+    public function isWritable ( );
 
     /**
      * Check if the file is executable.
      *
+     * @access  public
      * @return  bool
      */
-    public function isExecutable();
+    public function isExecutable ( );
 
     /**
      * Clear file status cache.
      *
+     * @access  public
      * @return  void
      */
-    public function clearStatisticCache();
+    public function clearStatisticCache ( );
 
     /**
      * Clear all files status cache.
      *
+     * @access  public
      * @return  void
      */
-    public static function clearAllStatisticCaches();
+    public static function clearAllStatisticCaches ( );
+}
+
 }
